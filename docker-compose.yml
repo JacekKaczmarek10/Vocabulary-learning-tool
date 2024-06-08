@@ -34,7 +34,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     volumes:
-      - quiz-ap-mysql-data:/var/lib/mysql
+      - quiz-app-mysql-data:/var/lib/mysql
     networks:
       - quiz-app-net
 
@@ -43,4 +43,4 @@ networks:
     name: quiz-app-net
 
 volumes:
-  quiz-ap-mysql-data:
+  quiz-app-mysql-data:
