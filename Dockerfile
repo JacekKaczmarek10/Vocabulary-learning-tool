@@ -1,27 +1,9 @@
-# Stage 1: Build the application
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM maven:3.9.6-amazoncorretto-21 AS build
+WORKDIR /build
+COPY . .
+RUN mvn clean install  -Dmaven.test.skip=true
 
-# Set the working directory
-WORKDIR /app
-
-# Copy the Maven files and source code
-COPY pom.xml /app/
-COPY src /app/src
-
-# Install Maven and build the application
-RUN apk add --no-cache maven && mvn clean package -DskipTests
-
-# Stage 2: Run the application with JRE
-FROM eclipse-temurin:21-jre-alpine
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the built JAR from the build stage
-COPY --from=build /app/target/*.jar quiz-app.jar
-
-# Expose the application port
-EXPOSE 8080
-
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "quiz-app.jar"]
+FROM openjdk:21
+COPY --from=build /build/target/inthai-1.0.0.jar /usr/local/lib/inthai-1.0.0.jar
+EXPOSE 8017
+CMD ["java", "-jar", "/usr/local/lib/inthai-1.0.0.jar"]

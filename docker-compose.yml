@@ -1,30 +1,46 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: quiz-db
-    environment:
-      MYSQL_ROOT_PASSWORD: your_password
-      MYSQL_DATABASE: quiz_dbgjg
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-quiz-data:/var/lib/mysql
-
-  app:
+  quiz-app-backend:
+    image: quiz-app-backend:latest
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: quiz-app
+      dockerfile: ./Dockerfile
+      args:
+        DB_URL: ${DB_URL}
+        DB_USERNAME: ${DB_USER}
+        DB_PASSWORD: ${DB_PASSWORD}
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://quiz-db:3306/quiz_db?useSSL=false&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: password
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    container_name: quiz-app-backend
     ports:
-      - "8080:8080"
+      - "8017:8017"
     depends_on:
       - mysql
+    networks:
+      - quiz-app-net
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    container_name: quiz-app-db
+    ports:
+      - "3312:3306"
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - quiz-ap-mysql-data:/var/lib/mysql
+    networks:
+      - quiz-app-net
+
+networks:
+  quiz-app-net:
+    name: quiz-app-net
 
 volumes:
-  mysql-quiz-data:
+  quiz-ap-mysql-data:
