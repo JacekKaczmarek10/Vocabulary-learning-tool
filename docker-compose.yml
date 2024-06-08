@@ -18,12 +18,12 @@ services:
     ports:
       - "8017:8017"
     depends_on:
-      - mysql
+      - quiz-db
     networks:
       - quiz-app-net
     restart: unless-stopped
 
-  mysql:
+  quiz-db:
     image: mysql:8.0
     container_name: quiz-app-db
     ports:
