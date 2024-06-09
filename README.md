@@ -4,9 +4,6 @@ Web application that allows you to learn words.The code was written using TDD.
 CI and CD integration was prepared. Code coverage is above 95%. 
 The backend was written using Kotlin Spring Boot and MySQL. Frontend at Thymeleaf.
 
-## Representantion
-![Screenshot from 2024-06-04 19-44-08](https://github.com/JacekKaczmarek10/Server-Monitoring-Tool/assets/104677364/41b8271d-01c4-4a2e-82aa-2eb4efd65041)
-
 
 ## Requirements
 
