@@ -26,6 +26,11 @@ services:
   quiz-db:
     image: mysql:8.0
     container_name: quiz-app-db
+    build:
+      args:
+        DB_URL: ${DB_URL}
+        DB_USERNAME: ${DB_USER}
+        DB_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3352:3306"
     environment:
