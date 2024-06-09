@@ -11,7 +11,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: fdsgdf12XXX2341
       SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.MySQL8Dialect
     ports:
-      - "8021:8021"
+      - "8025:8025"
     depends_on:
       - mysql
     networks:
