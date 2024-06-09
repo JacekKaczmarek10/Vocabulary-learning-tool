@@ -1,7 +1,5 @@
 name: Java CI with Maven
 
-on:
-	@@ -17,19 +9,19 @@ on:
 jobs:
   build:
 
