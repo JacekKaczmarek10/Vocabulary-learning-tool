@@ -22,7 +22,7 @@ services:
     image: mysql:8.0
     container_name: question-db
     ports:
-      - "3312:3306"
+      - "3315:3306"
     environment:
       MYSQL_USER: mysql
       MYSQL_ROOT_PASSWORD: fdsgdf12XXX2341
