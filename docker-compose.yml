@@ -38,10 +38,10 @@ services:
     ports:
       - "3311:3306"
     environment:
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=quiz
+      MYSQL_USER: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: quiz
     volumes:
       - quiz-mysql-data:/var/lib/mysql
     networks:
