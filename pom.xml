@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com</groupId>
-    <artifactId>quizapp</artifactId>
+    <artifactId>question</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>quiz app</name>
-    <description>quiz app</description>
+    <name>question app</name>
+    <description>question app</description>
     <properties>
         <java.version>21</java.version>
         <kotlin.version>2.0.0</kotlin.version>

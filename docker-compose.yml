@@ -4,12 +4,15 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+      args:
+        DB_URL: ${DB_URL}
+        DB_USERNAME: ${DB_USER}
+        DB_PASSWORD: ${DB_PASSWORD}
     container_name: quiz-backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://quiz-db:3306/quiz?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: mysql
-      SPRING_DATASOURCE_PASSWORD: fdsgdf12AAX2341AA
-      SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
     ports:
       - "8011:8011"
     depends_on:
@@ -20,22 +23,22 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: quiz-db
+    container_name: question-db
     ports:
       - "3311:3306"
     environment:
-      MYSQL_USER: mysql
-      MYSQL_ROOT_PASSWORD: fdsgdf12AAX2341AA
-      MYSQL_PASSWORD: fdsgdf12AAX2341AA
-      MYSQL_DATABASE: quiz
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_NAME}
     volumes:
-      - quiz-mysql-data:/var/lib/mysql
+      - question-mysql-data:/var/lib/mysql
     networks:
-      - quiz-net
+      - question-net
 
 networks:
-  quiz-net:
-    name: quiz-net
+  question-net:
+    name: question-net
 
 volumes:
-  quiz-mysql-data:
+  question-mysql-data:
