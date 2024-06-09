@@ -26,6 +26,12 @@ services:
 
   mysql:
     image: mysql:8.0
+    build:
+      args:
+        DOCKER_DB_URL: ${DOCKER_DB_URL}
+        DB_URL: ${DB_URL}
+        DB_USER: ${DB_USER}
+        DB_PASSWORD: ${DB_PASSWORD}
     container_name: quiz-db
     ports:
       - "3311:3306"
