@@ -6,16 +6,11 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      args:
-        DOCKER_DB_URL: ${DOCKER_DB_URL}
-        DB_USER: ${DB_USER}
-        DB_PASSWORD: ${DB_PASSWORD}
     container_name: quiz-backend
     environment:
-      - DOCKER_DB_URL=${DOCKER_DB_URL}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQL8Dialect
+      SPRING_DATASOURCE_URL: jdbc:mysql://quiz-db:3306/quiz?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: mysql
+      SPRING_DATASOURCE_PASSWORD: fdsgdf12AAX2341AA
     ports:
       - "8011:8011"
     depends_on:
