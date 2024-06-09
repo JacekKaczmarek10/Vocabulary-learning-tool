@@ -28,7 +28,7 @@ docker compose up -d --build
 ## RUN TEST
 
 ```shell
-mvn clean install -P 
+mvn clean install -Ptest
 ```
 
 ## Credentials
