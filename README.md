@@ -25,6 +25,11 @@ mvn spring-boot:run
 ```shell
 docker compose up -d --build
 ```
+## RUN TEST
+
+```shell
+mvn clean install -P 
+```
 
 ## Credentials
 
