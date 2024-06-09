@@ -8,10 +8,10 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://question-db:3306/question?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: mysql
-      SPRING_DATASOURCE_PASSWORD: fdsgdf12AAX2341AA
+      SPRING_DATASOURCE_PASSWORD: fdsgdf12XXX2341
       SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.MySQL8Dialect
     ports:
-      - "8011:8011"
+      - "8021:8021"
     depends_on:
       - mysql
     networks:
@@ -22,14 +22,38 @@ services:
     image: mysql:8.0
     container_name: question-db
     ports:
-      - "3311:3306"
+      - "3312:3306"
     environment:
       MYSQL_USER: mysql
-      MYSQL_ROOT_PASSWORD: fdsgdf12AAX2341AA
-      MYSQL_PASSWORD: fdsgdf12AAX2341AA
+      MYSQL_ROOT_PASSWORD: fdsgdf12XXX2341
+      MYSQL_PASSWORD: fdsgdf12XXX2341
       MYSQL_DATABASE: question
     volumes:
       - question-mysql-data:/var/lib/mysql
+    networks:
+      - question-net
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - question-net
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
     networks:
       - question-net
 
