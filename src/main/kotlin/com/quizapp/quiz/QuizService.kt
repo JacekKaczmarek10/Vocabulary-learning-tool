@@ -1,16 +1,16 @@
-package com.quizapp.service;
+package com.quizapp.quiz;
 
-import com.quizapp.entity.Answer
-import com.quizapp.entity.Question;
-import com.quizapp.repository.AnswerRepository;
-import com.quizapp.repository.QuestionRepository;
+import com.quizapp.answer.Answer
+import com.quizapp.question.Question;
+import com.quizapp.answer.AnswerRepository;
+import com.quizapp.question.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class QuizService(
-        @Autowired val questionRepository: QuestionRepository,
-        @Autowired val answerRepository: AnswerRepository
+    @Autowired val questionRepository: QuestionRepository,
+    @Autowired val answerRepository: AnswerRepository
 ) {
     fun getQuestions(): List<Question> {
         return questionRepository.findAll()

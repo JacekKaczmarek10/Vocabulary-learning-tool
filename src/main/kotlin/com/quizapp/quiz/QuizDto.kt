@@ -1,4 +1,4 @@
-package com.quizapp.dto;
+package com.quizapp.quiz;
 
 public class QuizDto {
 }

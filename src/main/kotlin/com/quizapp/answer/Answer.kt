@@ -1,5 +1,6 @@
-package com.quizapp.entity;
+package com.quizapp.answer;
 
+import com.quizapp.question.Question
 import jakarta.persistence.*
 
 @Entity

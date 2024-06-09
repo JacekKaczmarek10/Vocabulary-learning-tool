@@ -1,6 +1,5 @@
-package com.quizapp.repository;
+package com.quizapp.answer;
 
-import com.quizapp.entity.Answer
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AnswerRepository : JpaRepository<Answer, Long>
