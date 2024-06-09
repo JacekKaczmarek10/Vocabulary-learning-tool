@@ -13,10 +13,9 @@ services:
         DB_PASSWORD: ${DB_PASSWORD}
     container_name: quiz-backend
     environment:
-      - DOCKER_DB_URL=${DOCKER_DB_URL}
-      - DB_URL=${DB_URL}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATASOURCE_URL=${DOCKER_DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQL8Dialect
     ports:
       - "8011:8011"
@@ -28,12 +27,6 @@ services:
 
   mysql:
     image: mysql:8.0
-    build:
-      args:
-        DOCKER_DB_URL: ${DOCKER_DB_URL}
-        DB_URL: ${DB_URL}
-        DB_USER: ${DB_USER}
-        DB_PASSWORD: ${DB_PASSWORD}
     container_name: quiz-db
     ports:
       - "3311:3306"
