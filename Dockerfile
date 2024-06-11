@@ -6,6 +6,5 @@ RUN mvn clean install -Ptest
 
 FROM openjdk:21
 COPY --from=build /build/target/question-0.0.1-SNAPSHOT.jar /usr/local/lib/question-0.0.1-SNAPSHOT.jar
-EXPOSE 8011
 CMD ["java", "-jar", "/usr/local/lib/question-0.0.1-SNAPSHOT.jar"]
 
