@@ -19,8 +19,6 @@ services:
   mysql:
     image: mysql:8.0
     container_name: quiz-db
-    ports:
-      - "3311:3306"
     environment:
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASSWORD}
