@@ -40,7 +40,7 @@ jobs:
       - name: Health Check
         run: |
           sleep 10 # wait for the server to start
-          response=$(curl --write-out '%{http_code}' --silent --output /dev/null http://your-app-url/health)
+          response=$(curl --write-out '%{https_code}' --silent --output /dev/null https://quiz-backend.dev.codepred.pl/api/version)
           if [ "$response" -ne 200 ]; then
             echo "Health check failed with status code $response"
             exit 1
