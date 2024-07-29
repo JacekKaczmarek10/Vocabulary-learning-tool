@@ -45,6 +45,7 @@ jobs:
           script: |
             cd /srv/vocabulary-learning-tool &&
             sudo ./update.sh
+            
 
       - name: Health Check
         run: |
