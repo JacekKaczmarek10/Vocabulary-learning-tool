@@ -22,8 +22,9 @@ jobs:
           cache: maven
 
       - name: Test with Maven
-        working-directory: ./backend
-        run: mvn clean install -Ptest
+        run: |  
+          cd backend  # Move to the backend directory 
+          mvn clean install -Ptest
 
       - name: Generate dependency graph
         run: |
