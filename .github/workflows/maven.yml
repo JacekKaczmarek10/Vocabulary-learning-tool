@@ -2,9 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
           cache: maven
 
       - name: Test with Maven
-        run: |  
+        run: |
           cd backend  # Move to the backend directory 
           mvn clean install -Ptest
 
@@ -32,6 +32,8 @@ jobs:
           mvn dependency:tree > dependency-graph.txt
 
       - name: Update dependency graph
+        run: |
+          cd backend  # Move to the backend directory
           mvn com.github.ferstl:depgraph-maven-plugin:4.0.1:graph -DgraphFormat=text -DoutputFile=dependency-graph.txt
 
       - name: Submit dependency graph
@@ -52,7 +54,7 @@ jobs:
       - name: Health Check
         run: |
           sleep 10 # wait for the server to start
-          response=$(curl --write-out '%{https_code}' --silent --output /dev/null https://quiz-backend.dev.codepred.pl/api/version)
+          response=$(curl --write-out '%{http_code}' --silent --output /dev/null https://quiz-backend.dev.codepred.pl/api/version)
           if [ "$response" -ne 200 ]; then
             echo "Health check failed with status code $response"
             exit 1
