@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
 import BaseLayout from '../../components/layouts/BaseLayout';
-import QuizList from '../../components/lists/QuizList'; // Ensure correct path
+import QuizList from '../../components/lists/QuizList';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/system';
 
@@ -33,9 +33,7 @@ const QuizzesPage = () => {
                     </StyledButton>
                 </Box>
                 <StyledSeparator />
-                <StyledListContainer>
-                    <QuizList />
-                </StyledListContainer>
+                <QuizList />
             </StyledContainer>
         </BaseLayout>
     );

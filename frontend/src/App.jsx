@@ -7,7 +7,8 @@ import AboutPage from './pages/common/AboutPage';
 import QuizzesPage from './pages/quiz/QuizzesPage';
 import QuizDetailPage from './pages/quiz/QuizDetailPage';
 import { QuizProvider } from './context/QuizProvider';
-import AddQuizPage from "./pages/quiz/AddQuizPage"; // Ensure this path is correct
+import AddQuizPage from "./pages/quiz/AddQuizPage";
+import QuizEditPage from "./pages/quiz/QuizEditPage";
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/quizzes" element={<QuizzesPage />} />
+                    <Route path="/quiz/:id/edit" element={<QuizEditPage />} />
                     <Route path="/add-quiz" element={<AddQuizPage />} />
                     <Route path="/quiz/:id" element={<QuizDetailPage />} />
                     <Route path="/results" element={<ResultsPage />} />

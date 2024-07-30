@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import quizService from '../../services/QuizService'; // Ensure correct path to the service
+import quizService from '../../services/QuizService';
 import { CircularProgress, Box, Typography } from '@mui/material';
 import QuizItem from '../items/QuizItem';
 import { styled } from '@mui/system';

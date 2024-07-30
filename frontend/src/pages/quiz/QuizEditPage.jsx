@@ -1,17 +1,45 @@
-import React, { useState } from 'react';
-import { Container, Box, Typography, TextField, Button, IconButton } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Container, Box, Typography, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, CircularProgress } from '@mui/material';
 import BaseLayout from '../../components/layouts/BaseLayout';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import DeleteIcon from '@mui/icons-material/Delete';
 import quizService from '../../services/QuizService'; // Ensure correct import path
+import questionService from '../../services/QuestionService'; // Ensure correct import path
 import { styled } from '@mui/system';
+import { useParams } from "react-router-dom";
 
-const AddQuizPage = () => {
-    const [title, setTitle] = useState('');
-    const [fullDescription, setFullDescription] = useState('');
-    const [questions, setQuestions] = useState([
-        { content: '', answer: '' }
-    ]);
+const QuizEditPage = () => {
+    const { id } = useParams();
+    const [quiz, setQuiz] = useState(null);
+    const [questions, setQuestions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const [deletingQuiz, setDeletingQuiz] = useState(false);
+
+    useEffect(() => {
+        const fetchQuizData = async () => {
+            try {
+                const quizData = await quizService.getQuizById(id);
+                const questionsData = quizData.questions;
+                setQuiz(quizData);
+                setQuestions(questionsData);
+            } catch (error) {
+                console.error('Error fetching quiz data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchQuizData();
+    }, [id]);
+
+    const handleQuizChange = (e) => {
+        setQuiz({
+            ...quiz,
+            [e.target.name]: e.target.value,
+        });
+    };
 
     const handleQuestionChange = (index, field, value) => {
         const updatedQuestions = [...questions];
@@ -28,43 +56,67 @@ const AddQuizPage = () => {
         setQuestions(updatedQuestions);
     };
 
-    const handleSubmit = async () => {
+    const handleSaveQuiz = async () => {
         try {
-            const quizData = {
-                title,
-                fullDescription,
-                questions
-            };
-
-            await quizService.addQuiz(quizData);
-            // Clear form or redirect as needed
-            setTitle('');
-            setFullDescription('');
-            setQuestions([{ content: '', answer: '' }]);
-            alert('Quiz added successfully!');
+            await quizService.updateQuiz(id, quiz);
+            await Promise.all(
+                questions.map((question) =>
+                    questionService.updateQuestion(question.id, question)
+                )
+            );
+            alert('Quiz updated successfully!');
         } catch (error) {
-            console.error('Error adding quiz:', error);
+            console.error('Error saving quiz:', error);
         }
     };
+
+    const handleDeleteQuiz = async () => {
+        try {
+            setDeletingQuiz(true);
+            await quizService.deleteQuiz(id);
+            alert('Quiz deleted successfully!');
+            // Redirect or update UI accordingly
+        } catch (error) {
+            console.error('Error deleting quiz:', error);
+        } finally {
+            setDeletingQuiz(false);
+            setOpenConfirmDialog(false);
+        }
+    };
+
+    const openConfirmDialogHandler = () => {
+        setOpenConfirmDialog(true);
+    };
+
+    const closeConfirmDialogHandler = () => {
+        setOpenConfirmDialog(false);
+    };
+
+    if (loading) {
+        return (
+            <BaseLayout>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
+                    <CircularProgress />
+                    <Typography variant="h6" sx={{ mt: 2 }}>Loading quiz...</Typography>
+                </Box>
+            </BaseLayout>
+        );
+    }
 
     return (
         <BaseLayout>
             <Container maxWidth="md" sx={{ mt: 4 }}>
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
-                    <StyledTitle variant="h3" component="h1" gutterBottom>
-                        Add a New Quiz
-                    </StyledTitle>
-                    <StyledSubtitle variant="body1" sx={{ color: 'text.secondary' }}>
-                        Fill out the form below to add a new quiz.
-                    </StyledSubtitle>
-                </Box>
+                <Typography variant="h3" component="h1" gutterBottom>
+                    Edit Quiz
+                </Typography>
                 <Box sx={{ mb: 4 }}>
                     <StyledTextField
                         fullWidth
                         label="Quiz Title"
                         variant="outlined"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        name="title"
+                        value={quiz?.title || ''}
+                        onChange={handleQuizChange}
                         sx={{ mb: 2 }}
                     />
                     <StyledTextField
@@ -73,8 +125,9 @@ const AddQuizPage = () => {
                         variant="outlined"
                         multiline
                         rows={4}
-                        value={fullDescription}
-                        onChange={(e) => setFullDescription(e.target.value)}
+                        name="fullDescription"
+                        value={quiz?.fullDescription || ''}
+                        onChange={handleQuizChange}
                         sx={{ mb: 2 }}
                     />
                     {questions.map((question, index) => (
@@ -119,32 +172,52 @@ const AddQuizPage = () => {
                         <StyledButton
                             variant="contained"
                             color="secondary"
-                            onClick={handleSubmit}
+                            onClick={handleSaveQuiz}
                             sx={{ mb: 4 }}
                         >
-                            Submit Quiz
+                            Save Quiz
+                        </StyledButton>
+                        <StyledButton
+                            variant="contained"
+                            color="error"
+                            onClick={openConfirmDialogHandler}
+                            startIcon={<DeleteIcon />}
+                            sx={{ mb: 4 }}
+                        >
+                            Delete Quiz
                         </StyledButton>
                     </Box>
                 </Box>
+
+                <Dialog
+                    open={openConfirmDialog}
+                    onClose={closeConfirmDialogHandler}
+                >
+                    <DialogTitle>Confirm Delete</DialogTitle>
+                    <DialogContent>
+                        <Typography>Are you sure you want to delete this quiz? This action cannot be undone.</Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={closeConfirmDialogHandler} color="primary">
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={handleDeleteQuiz}
+                            color="error"
+                            disabled={deletingQuiz}
+                        >
+                            {deletingQuiz ? 'Deleting...' : 'Delete'}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Container>
         </BaseLayout>
     );
 };
 
-export default AddQuizPage;
+export default QuizEditPage;
 
 // Styled components
-const StyledTitle = styled(Typography)({
-    color: '#333',
-    fontWeight: 'bold',
-    marginBottom: '16px',
-});
-
-const StyledSubtitle = styled(Typography)({
-    color: '#666',
-    marginBottom: '24px',
-});
-
 const StyledTextField = styled(TextField)({
     borderRadius: '10px',
     backgroundColor: '#f9f9f9',
@@ -187,5 +260,5 @@ const StyledIconButton = styled(IconButton)({
     '&:hover': {
         backgroundColor: '#ff9999',
     },
-    marginLeft: '16px', // Adjust the spacing between the question form and the remove button
+    marginLeft: '16px',
 });
