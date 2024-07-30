@@ -16,7 +16,7 @@ class WebSecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .csrf{csrf -> csrf.disable()}
+            .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { requests ->
                 requests
                     .anyRequest().permitAll()
@@ -29,10 +29,12 @@ class WebSecurityConfig {
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
-        val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("*")
-        configuration.allowedMethods = listOf("*")
-        configuration.allowCredentials = true
+        val configuration = CorsConfiguration().apply {
+            allowedOrigins = listOf("http://localhost:3000")
+            allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
+            allowCredentials = true
+            allowedHeaders = listOf("*")
+        }
 
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)

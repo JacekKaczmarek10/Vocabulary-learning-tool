@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/quizzes")
-class QuizController @Autowired constructor(private val quizService: QuizService) {
+class QuizController
+    @Autowired
+    constructor(private val quizService: QuizService) {
 
     @PostMapping("/grade/{quizId}")
     fun gradeQuiz(

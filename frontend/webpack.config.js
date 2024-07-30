@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.js',  // Adjust this to the entry point of your application
+    entry: './src/index.js',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
@@ -9,17 +9,17 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,  // Adjust for your file types (e.g., .ts for TypeScript)
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react'],  // Adjust presets if needed
+                        presets: ['@babel/preset-env', '@babel/preset-react'],
                     },
                 },
             },
             {
-                test: /\.css$/,  // Adjust for your file types (e.g., .scss for Sass)
+                test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
             },
         ],
@@ -32,7 +32,6 @@ module.exports = {
             middlewares.unshift({
                 name: 'before-middleware',
                 middleware: (req, res, next) => {
-                    // Your middleware setup before
                     console.log('Middleware before request');
                     next();
                 },
@@ -41,7 +40,6 @@ module.exports = {
             middlewares.push({
                 name: 'after-middleware',
                 middleware: (req, res, next) => {
-                    // Your middleware setup after
                     console.log('Middleware after request');
                     next();
                 },
@@ -51,6 +49,6 @@ module.exports = {
         },
     },
     resolve: {
-        extensions: ['.js', '.jsx'],  // Adjust for your file types (e.g., .ts, .tsx for TypeScript)
+        extensions: ['.js', '.jsx'],
     },
 };
