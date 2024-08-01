@@ -60,6 +60,21 @@ class QuizController
         }
     }
 
+//    @PutMapping("/{quizId}")
+//    fun updateQuiz(
+//        @PathVariable quizId: Long,
+//        @RequestBody quizDto: QuizDto
+//    ): ResponseEntity<Quiz> {
+//        return try {
+//            val updatedQuiz = quizService.updateQuiz(quizId, quizDto)
+//            ResponseEntity.ok(updatedQuiz)
+//        } catch (e: EntityNotFoundException) {
+//            ResponseEntity.notFound().build()
+//        } catch (e: IllegalArgumentException) {
+//            ResponseEntity.badRequest().build()
+//        }
+//    }
+
     @PutMapping("/{quizId}/questions/{questionId}")
     fun updateQuestion(
         @PathVariable quizId: Long,
